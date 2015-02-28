@@ -17,9 +17,11 @@
 package org.springframework.web.servlet.config.annotation;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.cache.Cache;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.Assert;
@@ -149,19 +151,20 @@ public class ResourceHandlerRegistration {
             handler.setCacheSeconds(this.cachePeriod);
         }
 
-        //        if (locations != null && locations.size() > 0) {
-        //            for (Iterator<Resource> iterator = locations.iterator(); iterator.hasNext();) {
-        //                Resource resource = iterator.next();
-        //                if (resource instanceof ClassPathResource) {
-        //                    ClassPathResource cr = (ClassPathResource) resource;
-        //                    if (cr.getPath().equals("public/")) {
-        //                        handler.setSupportedMethods(ResourceHttpRequestHandler.METHOD_GET,
-        //                                ResourceHttpRequestHandler.METHOD_HEAD, ResourceHttpRequestHandler.METHOD_POST);
-        //                        break;
-        //                    }
-        //                }
-        //            }
-        //        }
+        // my hack
+        if (locations != null && locations.size() > 0) {
+            for (Iterator<Resource> iterator = locations.iterator(); iterator.hasNext();) {
+                Resource resource = iterator.next();
+                if (resource instanceof ClassPathResource) {
+                    ClassPathResource cr = (ClassPathResource) resource;
+                    if (cr.getPath().equals("public/")) {
+                        handler.setSupportedMethods(ResourceHttpRequestHandler.METHOD_GET,
+                                ResourceHttpRequestHandler.METHOD_HEAD, ResourceHttpRequestHandler.METHOD_POST);
+                        break;
+                    }
+                }
+            }
+        }
 
         return handler;
     }
