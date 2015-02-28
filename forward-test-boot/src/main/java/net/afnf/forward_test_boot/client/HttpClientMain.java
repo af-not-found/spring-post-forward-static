@@ -18,6 +18,9 @@ public class HttpClientMain {
         RequestConfig requestConfig = RequestConfig.custom().setRedirectsEnabled(true).build();
         HttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
 
+        // workaround from http://stackoverflow.com/questions/3658721/ 
+        // HttpClient client = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+
         InputStream inputStream = null;
         try {
             //HttpRequestBase req = new HttpGet("http://localhost:8080/prg");
